@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Translate</title>
+        <style>
+            body > div:nth-child(1) {
+                background-color: skyblue;
+                text-align: center;
+                font-size: 25px;
+                font-weight: bold;
+                height: 33px;
+            }
+            a {
+                text-decoration: none;
+                color: black;
+            }
+            body > div:nth-child(2) {
+                display: flex;
+                /* justify-content: space-evenly; */
+                background-color: #cecece;
+            }
+            #input-box,
+            #output-box {
+                width: 48%;
+                padding: 20px;
+                height: 400px;
+            }
+            #input,
+            #output {
+                width: 97%;
+                height: 300px;
+                margin: 10px 0px 10px 0px;
+                font-size: 20px;
+                padding: 10px;
+                background-color: white;
+                border: 1px solid black;
+            }
+            button {
+                width: 100px;
+                height: 30px;
+            }
+
+            @media (max-width: 500px) {
+                body > div:nth-child(2) {
+                    display: block;
+                }
+                #input-box,
+                #output-box {
+                    width: 100%;
+                    height: 300px;
+                    padding: 10px;
+                }
+                #input,
+                #output {
+                    width: 88%;
+                    font-size: 16px;
+                    height: 200px;
+                }
+                button {
+                    width: 100px;
+                    height: 30px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div><a href="index.html">MyTranslate</a></div>
+        <div>
+            <div id="input-box">
+                Translate from
+                <select id="Translate-from">
+                    <option value="en">English</option>
+                    <option value="ar">Arabic</option>
+                    <option value="az">Azerbaijani</option>
+                    <option value="zh">Chinese</option>
+                    <option value="nl">Dutch</option>
+                    <option value="fi">Finnish</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+                    <option value="hi">Hindi</option>
+                    <option value="hu">Hungarian</option>
+                    <option value="id">Indonesian</option>
+                    <option value="ga">Irish</option>
+                    <option value="it">Italian</option>
+                    <option value="ja">Japanese</option>
+                    <option value="ko">Korean</option>
+                    <option value="pl">Polish</option>
+                    <option value="pt">Portuguese</option>
+                    <option value="ru">Russian</option>
+                    <option value="es">Spanish</option>
+                    <option value="sv">Swedish</option>
+                    <option value="tr">Turkish</option>
+                    <option value="uk">Ukranian</option>
+                    <option value="vi">Vietnamese</option>
+                </select>
+                <textarea id="input"></textarea>
+                <button onclick="translateText()">Translate</button>
+            </div>
+            <div id="output-box">
+                Translate into
+                <select id="Translate-into">
+                    <option value="en">English</option>
+                    <option value="ar">Arabic</option>
+                    <option value="az">Azerbaijani</option>
+                    <option value="zh">Chinese</option>
+                    <option value="nl">Dutch</option>
+                    <option value="fi">Finnish</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+                    <option value="hi">Hindi</option>
+                    <option value="hu">Hungarian</option>
+                    <option value="id">Indonesian</option>
+                    <option value="ga">Irish</option>
+                    <option value="it">Italian</option>
+                    <option value="ja">Japanese</option>
+                    <option value="ko">Korean</option>
+                    <option value="pl">Polish</option>
+                    <option value="pt">Portuguese</option>
+                    <option value="ru">Russian</option>
+                    <option value="es">Spanish</option>
+                    <option value="sv">Swedish</option>
+                    <option value="tr">Turkish</option>
+                    <option value="uk">Ukranian</option>
+                    <option value="vi">Vietnamese</option>
+                </select>
+                <div id="output"></div>
+            </div>
+        </div>
+        <script>
+            let url = "https://libretranslate.de/translate";
+
+            const displayData = (data, output) => {
+                output.textContent = data.translatedText;
+            };
+
+            const translateText = async () => {
+                try {
+                    let src = document.getElementById("Translate-from").value;
+                    let tar = document.getElementById("Translate-into").value;
+                    let input = document.getElementById("input").value;
+
+                    let res = await fetch(url, {
+                        method: "POST",
+                        body: JSON.stringify({
+                            q: input,
+                            source: src,
+                            target: tar,
+                            format: "text",
+                        }),
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    });
+
+                    let data = await res.json();
+
+                    let output = document.getElementById("output");
+                    displayData(data, output);
+                } catch (err) {
+                    console.log(err);
+                }
+            };
+        </script>
+    </body>
+</html>
